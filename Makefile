@@ -32,7 +32,7 @@ revert:
 
 package:
 	make replace
-	zip -r "synergy-wholesale-domains-$(VERSION).zip" . -x  \
+	zip -r "synergy-wholesale-account-balance-$(VERSION).zip" . -x  \
 	'.DS_Store' '**/.DS_Store' '*.cache' '.git*' '*.md' 'Makefile' 'package.json' 'package-lock.json' \
 	'composer.json' 'composer.lock' '*.xml' \
 	'vendor/*' 'node_modules/*' '.git/*' 'tests/*'
