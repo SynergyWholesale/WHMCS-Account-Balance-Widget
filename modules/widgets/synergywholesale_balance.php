@@ -2,7 +2,7 @@
 
 use WHMCS\Database\Capsule as DB;
 
-define('SW_ACCOUNT_BALANCE_API_ENDPOINT', '{{API}}');
+define('SW_ACCOUNT_BALANCE_API_ENDPOINT', 'https://{{API}}');
 define('SW_ACCOUNT_BALANCE_WIDGET_NAME', 'synergywholesale_balance');
 
 class SynergyWholesaleAccountBalanceWidgetAPI
@@ -14,7 +14,7 @@ class SynergyWholesaleAccountBalanceWidgetAPI
     public function __construct($resellerID, $apiKey)
     {
         $this->soap = new SoapClient(null, [
-            'location' => SW_ACCOUNT_BALANCE_API_ENDPOINT,
+            'location' => SW_ACCOUNT_BALANCE_API_ENDPOINT . '/?wsdl',
             'uri' => '',
             'trace' => true
         ]);
@@ -25,8 +25,8 @@ class SynergyWholesaleAccountBalanceWidgetAPI
 
     public function request($command, $params = [])
     {
-        $params['resellerID'] = $this->apiKey;
-        $params['apiKey'] = $this->resellerID;
+        $params['resellerID'] = $this->resellerID;
+        $params['apiKey'] = $this->apiKey;
 
         try {
             $response = $this->soap->$command($params);
@@ -87,8 +87,13 @@ class SynergyWholesaleAccountBalanceWidget extends \WHMCS\Module\AbstractWidget
         $api = new SynergyWholesaleAccountBalanceWidgetAPI($result['reseller_id'], $result['api_key']);
 
         $apiResult = $api->balanceQuery();
-        if ($balance = $apiResult->balance) {
+        
+        $balance = $apiResult->balance ?? null;
+        
+        if (!is_null($balance)) {
             $content .= '<div style="text-align: center; color: green; font-weight: bold; font-size: 18px; padding: 16px;">Balance: $' . number_format($balance, 2) . '</div>';
+        } else {
+            $content .= '<div style="text-align: center; color: red; font-weight: bold; font-size: 18px; padding: 16px;">An error ocurred retrieving account balance: ' . $apiResult->errorMessage ?? 'An unknown error occurred'  . '</div>';
         }
 
         return $content;
