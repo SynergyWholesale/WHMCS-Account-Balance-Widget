@@ -27,7 +27,7 @@ revert:
 	sed -i${SED_PARAM} "s/${VERSION}/{{VERSION}}/g" "README.txt"
 	sed -i${SED_PARAM} "s/${RELEASE_DATE}/{{RELEASE_DATE}}/g" "README.txt"
 	sed -i${SED_PARAM} "s/${VERSION:v%=%}/{{VERSION}}/g" "modules/addons/synergywholesale_balance/synergywholesale_balance.php"
-	sed -i${SED_PARAM} "s/${VERSION:v%=%}/{{VERSION}}g" "modules/widgets/synergywholesale_balance.php"
+	sed -i${SED_PARAM} "s/${VERSION:v%=%}/{{VERSION}}/g" "modules/widgets/synergywholesale_balance.php"
 	sed -i${SED_PARAM} "s/${SW_API_HOSTNAME}/{{API}}/g" "modules/widgets/synergywholesale_balance.php"
 
 package:
